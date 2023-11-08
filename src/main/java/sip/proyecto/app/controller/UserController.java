@@ -91,12 +91,12 @@ public class UserController {
 	public ResponseEntity<?> getUsers()
 	{
 		try {
-			System.out.print("entre a getusers");
 			List<User> users= userService.findAll();
 			List<UserDTO> dtos = new ArrayList<UserDTO>();
 			for(User user : users) 
 			{
 				dtos.add(new UserDTO(user));
+
 			}
 			return new ResponseEntity<>(dtos,HttpStatus.OK);
 		}catch(Throwable e) {return new ResponseEntity<>(new Message(e.getMessage()),HttpStatus.NOT_ACCEPTABLE);}
