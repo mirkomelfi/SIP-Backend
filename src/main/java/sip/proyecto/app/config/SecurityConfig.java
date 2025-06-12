@@ -30,7 +30,7 @@ public class SecurityConfig {
 		  http
           .cors(httpSecurityCorsConfigurer -> {
               CorsConfiguration configuration = new CorsConfiguration();
-              configuration.setAllowedOrigins(Arrays.asList("https://sip-front-end.rj.r.appspot.com/"));
+              configuration.setAllowedOrigins(Arrays.asList("https://sip-front-end.rj.r.appspot.com/","http://localhost:3000/"));
               configuration.setAllowedMethods(Arrays.asList("*"));
               configuration.setAllowedHeaders(Arrays.asList("*"));
               configuration.setAllowCredentials(true);
