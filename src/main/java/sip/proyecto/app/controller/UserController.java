@@ -25,6 +25,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import sip.proyecto.app.Errors.LoggedAdminUsernameChangeError;
 import sip.proyecto.app.config.JwtAuthFilter;
+import sip.proyecto.app.dto.SessionDTO;
 import sip.proyecto.app.model.entity.User;
 import sip.proyecto.app.model.entity.UserDTO;
 import sip.proyecto.app.service.IUserService;
@@ -48,7 +49,7 @@ public class UserController {
 		User user = null;
 		boolean adminCreated = false;
 		try {
-			 user= userService.findByUsername(credentials.getUsername());CreateAdminIfEmptyDB(credentials);	
+			 user= userService.findByUsername(credentials.getUsername());CreateAdminIfEmptyDB(credentials);
 		}catch(Throwable e){
 			//BORRAR ESTO EN LA ENTREGA
 			if(user == null) 
@@ -70,7 +71,11 @@ public class UserController {
 					.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MIN * 60 * 1000))
 					.signWith(secretKey, SignatureAlgorithm.HS256).compact();
 
-			return new ResponseEntity<>(new Token(token), HttpStatus.OK);
+			SessionDTO session = new SessionDTO();
+			UserDTO dto = new UserDTO(user);
+			session.setUser(dto);
+			session.setToken(token);
+			return new ResponseEntity<>(session, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(new Message("Credenciales inválidas."), HttpStatus.UNAUTHORIZED);
 		}
